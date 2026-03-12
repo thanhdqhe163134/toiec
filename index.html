@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ Trình Phục Hồi Ngữ Pháp TOEIC 600+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; 
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 1000px; /* Arbitrary large number */
+            transition: max-height 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Chosen Palette: Slate (Neutrals) with Teal (Primary Action) and Amber (Warning/Highlight) accents -->
+<!-- Application Structure Plan: A single-page scrollable dashboard with sticky navigation. It follows a logical progression for a learner: 1. Understand the goal (Overview), 2. Identify weaknesses (Diagnosis), 3. Learn the core material (Framework using Tabs to manage density), 4. Follow a schedule (Roadmap using Accordions to hide/show weekly details), 5. Access tools (Resources). This structure prevents cognitive overload while providing a complete, actionable guide. -->
+<!-- Visualization & Content Choices: 
+     1. Target Goal -> Doughnut Chart (Chart.js) -> Shows the 65% accuracy needed visually to make the goal feel achievable.
+     2. Grammar Framework -> Tabbed Interface (Vanilla JS) -> Condenses heavy text into digestible chunks without leaving the page.
+     3. Roadmap -> Accordion Timeline (Vanilla JS) -> Allows users to see the big picture (Phases) and drill down into daily tasks.
+     All visual elements rely on CSS styling and Chart.js Canvas. CONFIRMING NO SVG OR MERMAID. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <nav class="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-sm z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 font-bold text-teal-700 text-xl tracking-tight">
+                    TOEIC MasterPlan
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#tong-quan" class="hover:text-teal-600 transition-colors">Tổng Quan</a>
+                    <a href="#chan-doan" class="hover:text-teal-600 transition-colors">Chẩn Đoán Lỗi</a>
+                    <a href="#khung-ngu-phap" class="hover:text-teal-600 transition-colors">Khung Ngữ Pháp</a>
+                    <a href="#lo-trinh" class="hover:text-teal-600 transition-colors">Lộ Trình 8 Tuần</a>
+                    <a href="#tai-lieu" class="hover:text-teal-600 transition-colors">Tài Liệu</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+
+        <header class="text-center space-y-4 max-w-3xl mx-auto">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">
+                Phục Hồi Nền Tảng Ngữ Pháp <br/>
+                <span class="text-teal-600">Mục Tiêu TOEIC 600+</span>
+            </h1>
+            <p class="text-lg text-slate-600">
+                Giải pháp sư phạm toàn diện dành riêng cho người đi làm bận rộn. Khắc phục hiện tượng "suy giảm ngôn ngữ" (B2 Attrition) và xây dựng nền móng vững chắc trước khi luyện đề.
+            </p>
+        </header>
+
+        <section id="tong-quan" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 md:p-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-100 pb-2 inline-block">Mục Tiêu Cốt Lõi</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        Phần này tóm tắt mục tiêu cụ thể bạn cần đạt được. Để chạm mốc TOEIC 600+, bạn không cần phải hoàn hảo. Vội vàng luyện đề khi mất gốc cấu trúc sẽ dẫn đến chững điểm. Mục tiêu hiện tại là tập trung lấy lại nền tảng, giải quyết các lỗi "hóa thạch" qua phương pháp học vi mô (Microlearning).
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-teal-500 font-bold mr-2">&#10003;</span>
+                            <span class="text-slate-700"><strong>Điểm số:</strong> 600+ (Đủ đáp ứng giao tiếp công sở)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-teal-500 font-bold mr-2">&#10003;</span>
+                            <span class="text-slate-700"><strong>Từ vựng cốt lõi:</strong> 1500 - 2000 từ vựng thương mại.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-teal-500 font-bold mr-2">&#10003;</span>
+                            <span class="text-slate-700"><strong>Thời gian phục hồi:</strong> 6 - 8 tuần (45-60 phút/ngày).</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 flex flex-col items-center justify-center">
+                    <h3 class="text-center font-semibold text-slate-700 mb-4">Tỷ Lệ Chính Xác Mục Tiêu (200 Câu)</h3>
+                    <div class="chart-container">
+                        <canvas id="targetChart"></canvas>
+                    </div>
+                    <p class="text-sm text-center text-slate-500 mt-4">Cần làm đúng ~130/200 câu (65%) để đạt 600+</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="chan-doan" class="space-y-8">
+            <div class="max-w-2xl">
+                <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-100 pb-2 inline-block">Chẩn Đoán: Sự Suy Giảm Ngôn Ngữ (B2 Attrition)</h2>
+                <p class="text-slate-600 mt-4">
+                    Khu vực này nhận diện những lỗi sai thường gặp nhất của người từng học tiếng Anh nhưng lâu không sử dụng. Nhận thức được các "hóa thạch ngôn ngữ" này là bước đầu tiên để sửa chữa chúng.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-rose-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-rose-500 font-bold text-xl mb-2">&#9888; Lỗi Từ Vựng</div>
+                    <h4 class="font-semibold text-slate-800 mb-2">Nhầm lẫn "Make" & "Do"</h4>
+                    <p class="text-sm text-slate-600">Không phân biệt được sắc thái tạo ra/sản xuất (Make) và thực hiện hành động/nhiệm vụ (Do).</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-amber-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-amber-500 font-bold text-xl mb-2">&#9888; Lỗi Thì</div>
+                    <h4 class="font-semibold text-slate-800 mb-2">Lạm dụng Tiếp Diễn</h4>
+                    <p class="text-sm text-slate-600">Sử dụng thì tiếp diễn cho các động từ trạng thái (stative verbs) chỉ nhận thức hoặc sở hữu (VD: I am knowing).</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-indigo-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-indigo-500 font-bold text-xl mb-2">&#9888; Lỗi Cấu Trúc</div>
+                    <h4 class="font-semibold text-slate-800 mb-2">Chủ-Vị Bất Đồng</h4>
+                    <p class="text-sm text-slate-600">Bị lừa bởi danh từ gần nhất. Vd: "One of the <i>managers</i> <b>are</b>..." (Sai, phải là <b>is</b> do chủ ngữ là One).</p>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-sky-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-sky-500 font-bold text-xl mb-2">&#9888; Lỗi Dịch Thuật</div>
+                    <h4 class="font-semibold text-slate-800 mb-2">Sai Giới Từ</h4>
+                    <p class="text-sm text-slate-600">Dịch trực tiếp (Word-by-word) từ tiếng Việt sang, dẫn đến dùng sai in/on/at và các Phrasal Verbs.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="khung-ngu-phap" class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 md:p-10 border-b border-slate-100">
+                <h2 class="text-2xl font-bold text-slate-800 inline-block">Khung Ngữ Pháp Trọng Tâm</h2>
+                <p class="text-slate-600 mt-2">
+                    TOEIC không kiểm tra mọi thứ. Phần này hệ thống hóa 4 mảng kiến thức cốt lõi xuất hiện nhiều nhất trong Part 5 & 6. Sử dụng các tab dưới đây để khám phá từng chủ điểm chi tiết.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap border-b border-slate-200 bg-slate-50" id="tabs">
+                <button class="tab-btn px-6 py-4 font-semibold text-sm focus:outline-none text-teal-700 border-b-2 border-teal-600 bg-white" data-target="tab-thi">
+                    1. Hệ Thống Thì
+                </button>
+                <button class="tab-btn px-6 py-4 font-semibold text-sm text-slate-500 hover:text-slate-700 focus:outline-none border-b-2 border-transparent" data-target="tab-tu-loai">
+                    2. Cấu Trúc Từ Loại
+                </button>
+                <button class="tab-btn px-6 py-4 font-semibold text-sm text-slate-500 hover:text-slate-700 focus:outline-none border-b-2 border-transparent" data-target="tab-nang-cao">
+                    3. Ngữ Pháp Thương Mại
+                </button>
+                <button class="tab-btn px-6 py-4 font-semibold text-sm text-slate-500 hover:text-slate-700 focus:outline-none border-b-2 border-transparent" data-target="tab-menh-de">
+                    4. Mệnh Đề & Liên Từ
+                </button>
+            </div>
+
+            <div class="p-6 md:p-10">
+                <div id="tab-thi" class="tab-content active">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Kiến trúc Hệ thống Thì & Phối hợp</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full text-left text-sm whitespace-nowrap">
+                            <thead class="uppercase tracking-wider border-b-2 border-slate-200 bg-slate-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-4 text-slate-800 font-semibold">Chuyên đề</th>
+                                    <th scope="col" class="px-6 py-4 text-slate-800 font-semibold">Bản chất Ứng dụng</th>
+                                    <th scope="col" class="px-6 py-4 text-slate-800 font-semibold">Dấu hiệu TOEIC</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-medium text-slate-900">Hiện tại Đơn & Tiếp diễn</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">HTĐ: Lịch trình cố định. HTTD: Đang diễn ra hoặc kế hoạch tương lai gần.</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">HTĐ: Trạng từ tần suất. HTTD: Lịch trình hội thảo, công tác.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-medium text-slate-900">Hiện tại Hoàn thành (Cực quan trọng)</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">Cầu nối quá khứ - hiện tại. Bắt đầu trong quá khứ, còn ảnh hưởng/tiếp tục.</td>
+                                    <td class="px-6 py-4 whitespace-normal font-mono text-teal-600">for, since, recently, lately, already, yet</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-medium text-slate-900">Quá khứ Đơn & Hoàn thành</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">QKĐ: Đã chấm dứt. QKHT: Xảy ra & hoàn tất TRƯỚC một hành động khác trong QK.</td>
+                                    <td class="px-6 py-4 whitespace-normal font-mono text-teal-600">before, after, by the time</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 font-medium text-slate-900">Các Dạng Tương lai</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">Will (quyết định tức thời), Going to (kế hoạch), TL Hoàn thành (hoàn tất trước mốc TL).</td>
+                                    <td class="px-6 py-4 whitespace-normal text-slate-600">By next Friday, we <span class="font-semibold">will have completed</span>...</td>
+                                </tr>
+                                <tr class="bg-amber-50">
+                                    <td class="px-6 py-4 font-bold text-amber-800">Quy tắc Phối hợp Thì</td>
+                                    <td class="px-6 py-4 whitespace-normal text-amber-900 font-semibold" colspan="2">
+                                        Không bao giờ dùng Tương Lai trong mệnh đề thời gian (bắt đầu bằng when, until, as soon as). Phải dùng Hiện tại (đơn/hoàn thành).
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-tu-loai" class="tab-content">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Nhận diện Từ Loại & Vị trí Cú pháp</h3>
+                    <p class="text-slate-600 mb-6">Chiếm tỷ trọng lớn trong Part 5. Cần nhận diện qua hậu tố (suffixes) để làm bài nhanh mà không cần dịch.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-teal-700 mb-3 border-b border-teal-200 pb-2">Hậu tố Nhận diện (Suffixes)</h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li><strong>Danh từ (Người):</strong> -er, -or, -ist <i>(employer, director)</i></li>
+                                <li><strong>Danh từ (Vật/Sự việc):</strong> -tion, -sion, -ment, -ance, -ity, -ness <i>(action, maintenance)</i></li>
+                                <li><strong>Tính từ:</strong> -able, -ible, -al, -ful, -ive, -ous <i>(acceptable, constructive)</i></li>
+                                <li><strong>Động từ:</strong> -ize, -ise, -en, -ify, -ate <i>(recognize, collaborate)</i></li>
+                                <li><strong>Trạng từ:</strong> -ly, -wise <i>(competitively)</i></li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-teal-700 mb-3 border-b border-teal-200 pb-2">Vị trí Cú pháp (Word Placement)</h4>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li><strong>[Mạo từ/Sở hữu/Giới từ] + <span class="text-teal-600 font-bold">Danh Từ</span></strong></li>
+                                <li><strong>[Be/Seem/Remain] + <span class="text-teal-600 font-bold">Tính Từ</span></strong></li>
+                                <li><strong><span class="text-teal-600 font-bold">Tính Từ</span> + Danh Từ</strong></li>
+                                <li class="text-amber-700 font-medium pt-2">Bẫy TOEIC: Danh từ ghép (Compound nouns) - Danh từ đứng trước làm bổ nghĩa (VD: <i>safety</i> regulations).</li>
+                                <li class="text-rose-600 font-medium pt-1">Quy tắc thép: Trạng từ KHÔNG ĐƯỢC đứng giữa Động từ và Tân ngữ trực tiếp.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-nang-cao" class="tab-content">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Câu Bị động, Điều kiện & Động từ Khuyết thiếu</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-slate-800 flex items-center"><span class="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>Câu Bị Động (Passive Voice)</h4>
+                            <p class="text-sm text-slate-600 mt-1">Sử dụng nhiều trong văn bản hành chính. Chú ý đặc biệt: Bị động hiện tại hoàn thành (<span class="font-mono bg-slate-100 px-1">has/have been + P.P</span>), bị động phi nhân xưng (<span class="font-mono bg-slate-100 px-1">It is said that...</span>), và cấu trúc nhờ vả (<span class="font-mono bg-slate-100 px-1">have/get sth done</span>).</p>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <h4 class="font-semibold text-slate-800 flex items-center"><span class="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>Câu Điều Kiện (Conditionals)</h4>
+                            <p class="text-sm text-slate-600 mt-1">Ngoài loại 1, 2, 3 cơ bản, mục tiêu 600+ cần nắm: <strong>Câu điều kiện hỗn hợp</strong> (Quá khứ tác động tới Hiện tại) và <strong>Đảo ngữ</strong> (Should/Were/Had đứng đầu, bỏ If).</p>
+                            <p class="text-xs text-slate-500 mt-1 italic">VD Đảo ngữ: "Should you have any questions, please contact..."</p>
+                        </div>
+                        <div class="border-t border-slate-100 pt-4">
+                            <h4 class="font-semibold text-slate-800 flex items-center"><span class="w-2 h-2 rounded-full bg-teal-500 mr-2"></span>Động từ Khuyết thiếu (Modal Verbs) - Suy luận</h4>
+                            <ul class="text-sm text-slate-600 mt-2 space-y-1 list-disc list-inside">
+                                <li><span class="font-mono text-teal-700">must have + P.P</span>: Chắc chắn đã xảy ra (logic).</li>
+                                <li><span class="font-mono text-teal-700">can't have + P.P</span>: Chắc chắn KHÔNG xảy ra.</li>
+                                <li><span class="font-mono text-teal-700">should have + P.P</span>: Lẽ ra nên làm nhưng KHÔNG làm (nuối tiếc/khiển trách).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-menh-de" class="tab-content">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4">Mệnh đề Quan hệ, Liên từ & Rút gọn</h3>
+                    <p class="text-slate-600 mb-6">Chìa khóa để đọc hiểu câu dài trong Part 7 và điền từ Part 6.</p>
+
+                    <div class="bg-slate-50 p-5 rounded-xl border-l-4 border-teal-500 mb-6">
+                        <h4 class="font-bold text-slate-800 mb-2">Rút gọn Mệnh đề (Participle Clauses)</h4>
+                        <p class="text-sm text-slate-700 mb-2">Khi lược bỏ đại từ quan hệ, động từ biến đổi để tăng tốc độ đọc:</p>
+                        <ul class="text-sm text-slate-600 space-y-1">
+                            <li>&#10142; Thể chủ động &#10142; Biến thành <strong>V-ing</strong></li>
+                            <li>&#10142; Thể bị động &#10142; Biến thành <strong>V-ed / Past Participle</strong></li>
+                        </ul>
+                    </div>
+
+                    <h4 class="font-bold text-slate-800 mb-3 border-b border-slate-200 pb-2">Liên từ vs. Giới từ (Lỗi kinh điển)</h4>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-rose-50 p-3 rounded border border-rose-100">
+                            <div class="font-semibold text-rose-800 mb-1">Giới từ (Cộng Danh từ/Cụm N)</div>
+                            <ul class="text-rose-700/80">
+                                <li>Because of</li>
+                                <li>Due to</li>
+                                <li>In spite of / Despite</li>
+                            </ul>
+                        </div>
+                        <div class="bg-teal-50 p-3 rounded border border-teal-100">
+                            <div class="font-semibold text-teal-800 mb-1">Liên từ (Cộng Mệnh đề S+V)</div>
+                            <ul class="text-teal-700/80">
+                                <li>Because</li>
+                                <li>As / Since</li>
+                                <li>Although / Even though</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lo-trinh" class="space-y-8">
+            <div class="max-w-2xl text-center mx-auto">
+                <h2 class="text-2xl font-bold text-slate-800 border-b-2 border-teal-100 pb-2 inline-block">Lộ Trình Xây Nền Chuyên Sâu (6-8 Tuần)</h2>
+                <p class="text-slate-600 mt-4">
+                    Áp dụng phương pháp Microlearning (mỗi ngày 45-60 phút). Click vào từng giai đoạn để xem mục tiêu và nhiệm vụ học tập chi tiết. Tuyệt đối không làm đề full trong giai đoạn này.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- Phase 1 -->
+                <div class="border border-slate-200 rounded-xl bg-white overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 text-left font-bold text-lg text-slate-800 bg-slate-50 hover:bg-slate-100 flex justify-between items-center focus:outline-none">
+                        <span>Giai đoạn 1: Phục hồi Cơ bản & Từ loại (Tuần 1 - 3)</span>
+                        <span class="icon text-teal-600 text-2xl leading-none">+</span>
+                    </button>
+                    <div class="accordion-content bg-white">
+                        <div class="p-6 border-t border-slate-100 space-y-4">
+                            <p class="text-sm font-semibold text-teal-600 uppercase tracking-wide">Mục tiêu: Quét sạch lỗ hổng cơ bản, phản xạ điền từ loại.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700">
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 1 - 3: Tổng quan Từ loại</div>
+                                    <p class="text-slate-500">Học thuộc hậu tố nhận diện Noun, Adj. Phân tích cấu trúc câu đơn.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 4 - 7: Thì Hiện tại</div>
+                                    <p class="text-slate-500">Phân biệt Simple/Continuous/Perfect. Cài đặt lại tư duy về stative verbs.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 8 - 11: Quá khứ & Tương lai</div>
+                                    <p class="text-slate-500">Quy tắc không dùng Tương lai trong mệnh đề thời gian. Ôn động từ bất quy tắc.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 12 - 15: Vị trí Cú pháp</div>
+                                    <p class="text-slate-500">Thực hành điền từ loại (Part 5 mô phỏng). Thuộc lòng: Mạo từ + Adv + Adj + Noun.</p>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <div class="font-bold mb-1">Ngày 16 - 21: Danh từ & Chủ-Vị</div>
+                                    <p class="text-slate-500">Sự hòa hợp Chủ-Vị, nhận diện bẫy cụm danh từ phức tạp bị phân tách bởi giới từ.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="border border-slate-200 rounded-xl bg-white overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 text-left font-bold text-lg text-slate-800 bg-slate-50 hover:bg-slate-100 flex justify-between items-center focus:outline-none">
+                        <span>Giai đoạn 2: Cấu trúc Thương mại Nâng cao (Tuần 4 - 6)</span>
+                        <span class="icon text-teal-600 text-2xl leading-none">+</span>
+                    </button>
+                    <div class="accordion-content bg-white">
+                        <div class="p-6 border-t border-slate-100 space-y-4">
+                             <p class="text-sm font-semibold text-teal-600 uppercase tracking-wide">Mục tiêu: Xử lý linh hồn của văn bản công sở (Bị động, Giả định).</p>
+                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700">
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 22 - 26: Thể Bị Động</div>
+                                    <p class="text-slate-500">Chuyển đổi 12 thì. Luyện cấu trúc nhờ vả (have/get done). Đọc hiểu thông báo ẩn chủ thể.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 27 - 31: Câu Điều Kiện</div>
+                                    <p class="text-slate-500">Phân biệt Hậu quả loại 2 & 3. Điều kiện hỗn hợp. Cấu trúc thay thế If (provided that).</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 32 - 36: Động từ Khuyết thiếu</div>
+                                    <p class="text-slate-500">Tập trung Modal + Have + V3/ed để hiểu email phản hồi sự cố/suy luận.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 37 - 42: Mệnh đề Quan hệ</div>
+                                    <p class="text-slate-500">Ghép câu. Luyện tập kỹ năng Rút gọn mệnh đề (V-ing / V-ed) để tăng tốc đọc Part 7.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="border border-slate-200 rounded-xl bg-white overflow-hidden">
+                    <button class="accordion-btn w-full px-6 py-5 text-left font-bold text-lg text-slate-800 bg-slate-50 hover:bg-slate-100 flex justify-between items-center focus:outline-none">
+                        <span>Giai đoạn 3: Rà soát & Khởi động Luyện đề (Tuần 7 - 8)</span>
+                        <span class="icon text-teal-600 text-2xl leading-none">+</span>
+                    </button>
+                    <div class="accordion-content bg-white">
+                        <div class="p-6 border-t border-slate-100 space-y-4">
+                            <p class="text-sm font-semibold text-teal-600 uppercase tracking-wide">Mục tiêu: Đánh bóng kiến thức học vẹt và làm quen áp lực Mini-test.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-700">
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 43 - 47: Liên từ vs Giới từ</div>
+                                    <p class="text-slate-500">Phân biệt và xác định logic Nguyên nhân - Kết quả, Nhượng bộ.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 48 - 52: Gerunds & Infinitives</div>
+                                    <p class="text-slate-500">Dùng Flashcards học thuộc lòng danh sách động từ đi kèm V-ing / To-V.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 53 - 56: Giới từ & Phrasal Verbs</div>
+                                    <p class="text-slate-500">Xóa bỏ lỗi dịch trực tiếp tiếng Việt. Học các collocations cố định chốn công sở.</p>
+                                </div>
+                                <div>
+                                    <div class="font-bold mb-1">Ngày 57 - 60: Kiểm tra Tổng hợp</div>
+                                    <p class="text-slate-500">Làm Mini-tests (25-50 câu) cho Part 5, 6. Mục tiêu đạt 60-70% và tự review lỗi.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tai-lieu" class="bg-slate-800 text-white rounded-2xl p-6 md:p-10 mb-10">
+            <h2 class="text-2xl font-bold border-b-2 border-teal-500 pb-2 inline-block mb-6">Phương Pháp & Tài Liệu Khuyên Dùng</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="col-span-1 lg:col-span-2 space-y-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-teal-400 mb-2">Chiến lược Từ vựng: Thematic & Word Family</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Không học danh sách A-Z. Hãy học theo chủ đề (Hợp đồng, Nhân sự, Marketing). Đặc biệt, khi học 1 từ, phải học cả gia đình từ để phục vụ Part 5.
+                        </p>
+                        <div class="bg-slate-700/50 p-4 rounded-lg font-mono text-sm border border-slate-600">
+                            <span class="text-slate-400">Gốc:</span> <span class="text-white">collaborate</span> (Động từ) <br>
+                            <span class="text-slate-400">&#10142;</span> <span class="text-amber-300">collaboration</span> (Danh từ sự việc) <br>
+                            <span class="text-slate-400">&#10142;</span> <span class="text-amber-300">collaborator</span> (Danh từ người) <br>
+                            <span class="text-slate-400">&#10142;</span> <span class="text-teal-300">collaborative</span> (Tính từ)
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-teal-400 mb-2">Thuật toán Spaced Repetition (Lặp lại ngắt quãng)</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Bắt buộc cài ứng dụng Flashcard. App sẽ tự động tính toán thời điểm bạn sắp quên một từ/cấu trúc để nhắc bạn ôn lại. Đây là cách duy nhất đưa kiến thức vào trí nhớ dài hạn.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-white mb-4">Hệ Sinh Thái Công Cụ</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Sách Nền Tảng</div>
+                        <a href="#" class="block bg-slate-700 hover:bg-slate-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128216; English Grammar in Use (R. Murphy)
+                        </a>
+                        <a href="#" class="block bg-slate-700 hover:bg-slate-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128215; 600 Essential Words for TOEIC (Barron's)
+                        </a>
+                        
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider pt-2">Apps & Microlearning</div>
+                        <a href="https://www.memrise.com/" target="_blank" class="block bg-slate-700 hover:bg-teal-700 hover:border-teal-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128241; Memrise / Mochi Mochi (Từ vựng SRS)
+                        </a>
+                        <a href="#" class="block bg-slate-700 hover:bg-teal-700 hover:border-teal-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128241; LearnEnglish Grammar (British Council)
+                        </a>
+
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider pt-2">Web Luyện Tập (Mini-Tests)</div>
+                        <a href="https://zenlish.edu.vn/" target="_blank" class="block bg-slate-700 hover:bg-amber-700 hover:border-amber-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128187; Hệ thống Test Online Zenlish
+                        </a>
+                        <a href="https://englishteststore.net/" target="_blank" class="block bg-slate-700 hover:bg-amber-700 hover:border-amber-600 transition p-3 rounded border border-slate-600 text-sm font-medium">
+                            &#128187; English Test Store (Ngữ pháp)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-sm text-slate-500">
+        <p>Tài liệu nội bộ dựa trên Báo cáo Đánh giá Lộ trình Phục hồi Ngữ pháp TOEIC 600+</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Chart.js Initialization
+            const ctx = document.getElementById('targetChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Cần làm đúng (65%)', 'Biên độ sai (35%)'],
+                    datasets: [{
+                        data: [130, 70], // 130/200 ~ 65% for 600+
+                        backgroundColor: [
+                            '#0d9488', // teal-600
+                            '#e2e8f0'  // slate-200
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Inter', sans-serif", size: 12 },
+                                color: '#475569'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ~' + context.raw + ' câu';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Tab Navigation Logic
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active state from all buttons
+                    tabBtns.forEach(b => {
+                        b.classList.remove('text-teal-700', 'border-teal-600', 'bg-white');
+                        b.classList.add('text-slate-500', 'border-transparent');
+                    });
+                    
+                    // Add active state to clicked button
+                    btn.classList.remove('text-slate-500', 'border-transparent');
+                    btn.classList.add('text-teal-700', 'border-teal-600', 'bg-white');
+
+                    // Hide all content
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Show target content
+                    const targetId = btn.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // 3. Accordion Logic for Roadmap
+            const accordions = document.querySelectorAll('.accordion-btn');
+            
+            accordions.forEach(acc => {
+                acc.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.icon');
+                    
+                    // Toggle current accordion
+                    if (content.classList.contains('open')) {
+                        content.classList.remove('open');
+                        icon.textContent = '+';
+                    } else {
+                        // Close others optionally (uncomment below lines if exclusive open is desired)
+                        // document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+                        // document.querySelectorAll('.icon').forEach(i => i.textContent = '+');
+                        
+                        content.classList.add('open');
+                        icon.textContent = '−';
+                    }
+                });
+            });
+            
+            // Open the first accordion by default
+            if(accordions.length > 0) {
+                accordions[0].click();
+            }
+        });
+    </script>
+</body>
+</html>
